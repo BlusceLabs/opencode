@@ -115,7 +115,7 @@ export default function Home() {
                       <span data-slot="command-script">
                         <span>curl -fsSL </span>
                         <span data-slot="protocol">https://</span>
-                        <span data-slot="highlight">opencode.ai/install</span>
+                        <span data-slot="highlight">raw.githubusercontent.com/BlusceLabs/opencode/main/install</span>
                         <span> | bash</span>
                       </span>
                       <CopyStatus />

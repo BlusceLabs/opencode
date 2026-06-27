@@ -22,7 +22,7 @@
 
 ```bash
 # YOLO
-curl -fsSL https://opencode.ai/install | bash
+curl -fsSL https://raw.githubusercontent.com/BlusceLabs/opencode/main/install | bash
 
 # Package managers
 npm i -g opencode-ai@latest        # or bun/pnpm/yarn
@@ -68,8 +68,8 @@ The install script respects the following priority order for the installation pa
 
 ```bash
 # Examples
-OPENCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://opencode.ai/install | bash
-XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://opencode.ai/install | bash
+OPENCODE_INSTALL_DIR=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/BlusceLabs/opencode/main/install | bash
+XDG_BIN_DIR=$HOME/.local/bin curl -fsSL https://raw.githubusercontent.com/BlusceLabs/opencode/main/install | bash
 ```
 
 ### Agents
