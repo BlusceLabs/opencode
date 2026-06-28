@@ -468,6 +468,18 @@ export const page = Effect.fn("MessageV2.page")(function* (input: {
   }
 })
 
+export const all = Effect.fn("MessageV2.all")(function* (input: { sessionID: SessionID }) {
+  const { db } = yield* Database.Service
+  const rows = yield* db
+    .select()
+    .from(MessageTable)
+    .where(eq(MessageTable.session_id, input.sessionID))
+    .orderBy(MessageTable.time_created, MessageTable.id)
+    .all()
+    .pipe(Effect.orDie)
+  return yield* hydrate(db, rows)
+})
+
 export function stream(sessionID: SessionID) {
   const size = 50
   return Effect.gen(function* () {
