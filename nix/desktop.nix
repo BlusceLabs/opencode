@@ -8,14 +8,14 @@
   makeWrapper,
   writableTmpDirAsHomeHook,
   autoPatchelfHook,
-  opencode,
+  clawc,
 }:
 let
   electron = electron_41;
 in
 stdenv.mkDerivation (finalAttrs: {
-  pname = "opencode-desktop";
-  inherit (opencode)
+  pname = "clawc-desktop";
+  inherit (clawc)
     version
     src
     node_modules
@@ -38,7 +38,7 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.getLib stdenv.cc.cc)
   ];
 
-  env = opencode.env // {
+  env = clawc.env // {
     ELECTRON_SKIP_BINARY_DOWNLOAD = "1";
   };
 
@@ -49,7 +49,7 @@ stdenv.mkDerivation (finalAttrs: {
     FILES=(src/main/windows.ts)
     for file in "''${FILES[@]}"; do
       substituteInPlace $BASE_PATH/$file \
-        --replace-fail "process.resourcesPath" "'$out/opt/opencode-desktop/resources'"
+        --replace-fail "process.resourcesPath" "'$out/opt/clawc-desktop/resources'"
     done
   '';
 
@@ -83,15 +83,15 @@ stdenv.mkDerivation (finalAttrs: {
     + lib.optionalString stdenv.hostPlatform.isDarwin ''
       mkdir -p $out/Applications
       mv dist/mac*/*.app $out/Applications
-      makeWrapper "$out/Applications/OpenCode.app/Contents/MacOS/OpenCode" $out/bin/opencode-desktop
+      makeWrapper "$out/Applications/ClawC.app/Contents/MacOS/OpenCode" $out/bin/clawc-desktop
     ''
     + lib.optionalString stdenv.hostPlatform.isLinux ''
-      mkdir -p $out/opt/opencode-desktop
-      cp -r dist/linux*-unpacked/{resources,LICENSE*} $out/opt/opencode-desktop
-      makeWrapper ${lib.getExe electron} $out/bin/opencode-desktop \
+      mkdir -p $out/opt/clawc-desktop
+      cp -r dist/linux*-unpacked/{resources,LICENSE*} $out/opt/clawc-desktop
+      makeWrapper ${lib.getExe electron} $out/bin/clawc-desktop \
         --inherit-argv0 \
         --set ELECTRON_FORCE_IS_PACKAGED 1 \
-        --add-flags $out/opt/opencode-desktop/resources/app.asar \
+        --add-flags $out/opt/clawc-desktop/resources/app.asar \
         --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true}}"
     ''
     + ''
@@ -104,7 +104,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   meta = {
     description = "OpenCode Desktop App";
-    mainProgram = "opencode-desktop";
-    inherit (opencode.meta) homepage license platforms;
+    mainProgram = "clawc-desktop";
+    inherit (clawc.meta) homepage license platforms;
   };
 })
