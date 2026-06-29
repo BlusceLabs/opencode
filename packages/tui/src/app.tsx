@@ -76,8 +76,10 @@ import {
   useOpencodeKeymap,
 } from "./keymap"
 
-import type { EventSource } from "./context/sdk"
+import type { Event, EventTuiPromptAppend } from "@opencode-ai/sdk/v2"
+import { type EventSource } from "./context/sdk"
 import { DialogVariant } from "./component/dialog-variant"
+import { DialogQuickOpen } from "./component/dialog-quick-open"
 import { createTuiAttention } from "./attention"
 import * as TuiAudio from "./audio"
 import { win32DisableProcessedInput, win32FlushInputBuffer } from "./terminal-win32"
@@ -793,6 +795,33 @@ function App(props: { onSnapshot?: () => Promise<string[]>; pluginHost: TuiPlugi
         slashName: "help",
         run: () => {
           dialog.replace(() => <DialogHelp />)
+        },
+        category: "System",
+      },
+      {
+        name: "quick_open.show",
+        title: "Quick open file",
+        slashName: "open",
+        hidden: true,
+        run: () => {
+          dialog.replace(() => (
+            <DialogQuickOpen
+              onSelect={(filePath) => {
+                // Dispatch event through SDK to be handled by prompt component
+                sdk.event.emit("event", {
+                  directory: sync.path.directory || "",
+                  payload: {
+                    id: "quick-open",
+                    type: "tui.prompt.append",
+                    properties: { text: `@${filePath} ` },
+                  },
+                })
+                setTimeout(() => {
+                  promptRef.current?.focus()
+                }, 0)
+              }}
+            />
+          ))
         },
         category: "System",
       },
