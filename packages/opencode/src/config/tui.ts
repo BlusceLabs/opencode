@@ -7,20 +7,20 @@ import { ConfigParse } from "@/config/parse"
 import * as ConfigPaths from "@/config/paths"
 import { migrateTuiConfig } from "./tui-migrate"
 import { resolveHostAttentionSoundPaths } from "./tui-host-attention"
-import { Flag } from "@opencode-ai/core/flag/flag"
-import { isRecord } from "@opencode-ai/tui/util/record"
-import { Global } from "@opencode-ai/core/global"
-import { FSUtil } from "@opencode-ai/core/fs-util"
+import { Flag } from "@clawc/core/flag/flag"
+import { isRecord } from "@clawc/tui/util/record"
+import { Global } from "@clawc/core/global"
+import { FSUtil } from "@clawc/core/fs-util"
 import { CurrentWorkingDirectory } from "./tui-cwd"
 import { ConfigPlugin } from "@/config/plugin"
-import { TuiKeybind } from "@opencode-ai/tui/config/keybind"
-import { InstallationLocal, InstallationVersion } from "@opencode-ai/core/installation/version"
-import { makeRuntime } from "@opencode-ai/core/effect/runtime"
+import { TuiKeybind } from "@clawc/tui/config/keybind"
+import { InstallationLocal, InstallationVersion } from "@clawc/core/installation/version"
+import { makeRuntime } from "@clawc/core/effect/runtime"
 import { Filesystem } from "@/util/filesystem"
 import { ConfigVariable } from "@/config/variable"
-import { Npm } from "@opencode-ai/core/npm"
+import { Npm } from "@clawc/core/npm"
 import { FormatError, FormatUnknownError } from "@/cli/error"
-import { TuiConfig } from "@opencode-ai/tui/config"
+import { TuiConfig } from "@clawc/tui/config"
 
 export const Info = TuiConfig.Info
 export type Info = TuiConfig.Info
@@ -236,7 +236,7 @@ export const layer = Layer.effect(
           .install(dir, {
             add: [
               {
-                name: "@opencode-ai/plugin",
+                name: "@clawc/plugin",
                 version: InstallationLocal ? undefined : InstallationVersion,
               },
             ],

@@ -5,7 +5,7 @@
 
 ## Quick Stats
 
-- **Total occurrences of `opencode` / `@opencode-ai`:** ~22,692
+- **Total occurrences of `opencode` / `@clawc`:** ~22,692
 - **Files affected:** ~2,311 (excluding `node_modules`, `.git`, `.opencode`, build dirs, lockfiles)
 
 ## Top Surface Areas
@@ -20,33 +20,33 @@
 | GitHub workflows | 22 files |
 | `README.md`, `CONTRIBUTING.md`, `SECURITY.md`, `LICENSE` | public-facing files |
 | `install` script | curl path points to `BlusceLabs/opencode` |
-| `package.json` | root package name `opencode`, workspace deps `@opencode-ai/*` |
+| `package.json` | root package name `opencode`, workspace deps `@clawc/*` |
 | `bunfig.toml`, `sst.config.ts`, `turbo.json` | tooling configs |
 
 ## Package Scope to Decide
 
-Current npm scope: `@opencode-ai/*`
+Current npm scope: `@clawc/*`
 Likely new scopes to choose from:
 - `@varth/*`
-- `@varth-ai/*`
+- `@clawc/*`
 
 Most-referenced packages (from code + docs + specs):
-- `@opencode-ai/sdk`
-- `@opencode-ai/plugin`
-- `@opencode-ai/script`
-- `@opencode-ai/core`
-- `@opencode-ai/client`
-- `@opencode-ai/protocol`
-- `@opencode-ai/schema`
-- `@opencode-ai/server`
-- `@opencode-ai/tui`
+- `@clawc/sdk`
+- `@clawc/plugin`
+- `@clawc/script`
+- `@clawc/core`
+- `@clawc/client`
+- `@clawc/protocol`
+- `@clawc/schema`
+- `@clawc/server`
+- `@clawc/tui`
 
 ## Open Questions Before Implementation
 
 1. **Scope:** repo-only, package-names too, or full rebrand (CLI, `~/.opencode`, binary, desktop app, docs URLs, Discord)?
-2. **New npm scope:** `@varth/*` or `@varth-ai/*`?
+2. **New npm scope:** `@varth/*` or `@clawc/*`?
 3. **GitHub org/repo:** keep `BlusceLabs` or also rename org?
-4. **Breaking changes:** single atomic rename, or staged (publish `@varth/*` packages, deprecate `@opencode-ai/*`)?
+4. **Breaking changes:** single atomic rename, or staged (publish `@varth/*` packages, deprecate `@clawc/*`)?
 
 ## Suggested Implementation Plan (draft)
 

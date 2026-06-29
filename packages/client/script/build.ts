@@ -1,6 +1,6 @@
 import { NodeFileSystem } from "@effect/platform-node"
-import { compile, emitEffectImported, emitPromise, write } from "@opencode-ai/httpapi-codegen"
-import { Api } from "@opencode-ai/server/api"
+import { compile, emitEffectImported, emitPromise, write } from "@clawc/httpapi-codegen"
+import { Api } from "@clawc/server/api"
 import { Effect } from "effect"
 import { HttpApi } from "effect/unstable/httpapi"
 import { fileURLToPath } from "url"

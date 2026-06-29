@@ -1,11 +1,11 @@
-import { LayerNode } from "@opencode-ai/core/effect/layer-node"
-import { httpClient, path } from "@opencode-ai/core/effect/layer-node-platform"
+import { LayerNode } from "@clawc/core/effect/layer-node"
+import { httpClient, path } from "@clawc/core/effect/layer-node-platform"
 import { NodePath } from "@effect/platform-node"
 import { Effect, Layer, Path, Schema, Context } from "effect"
 import { FetchHttpClient, HttpClient, HttpClientRequest, HttpClientResponse } from "effect/unstable/http"
 import { withTransientReadRetry } from "@/util/effect-http-client"
-import { FSUtil } from "@opencode-ai/core/fs-util"
-import { Global } from "@opencode-ai/core/global"
+import { FSUtil } from "@clawc/core/fs-util"
+import { Global } from "@clawc/core/global"
 
 const skillConcurrency = 4
 const fileConcurrency = 8

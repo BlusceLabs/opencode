@@ -1,7 +1,7 @@
 export * as Catalog from "./catalog"
 
 import { Array, Context, Effect, Layer, Option, Order, pipe, Schema } from "effect"
-import { Catalog } from "@opencode-ai/schema/catalog"
+import { Catalog } from "@clawc/schema/catalog"
 import { ModelV2 } from "./model"
 import { ProviderV2 } from "./provider"
 import { EventV2 } from "./event"

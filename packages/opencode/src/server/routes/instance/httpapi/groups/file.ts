@@ -1,5 +1,5 @@
-import { FileSystem } from "@opencode-ai/core/filesystem"
-import { NonNegativeInt } from "@opencode-ai/core/schema"
+import { FileSystem } from "@clawc/core/filesystem"
+import { NonNegativeInt } from "@clawc/core/schema"
 import { LSP } from "@/lsp/lsp"
 import { Schema } from "effect"
 import { HttpApi, HttpApiEndpoint, HttpApiGroup, OpenApi } from "effect/unstable/httpapi"
