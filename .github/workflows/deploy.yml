@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - dev
-      - production
+      - main
   workflow_dispatch:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   deploy:
-    if: github.repository == 'BlusceLabs/opencode' && (github.ref_name == 'dev' || github.ref_name == 'production')
+    if: github.repository == 'BlusceLabs/opencode' && (github.ref_name == 'dev' || github.ref_name == 'main')
     runs-on: ubuntu-latest
     environment: ${{ github.ref_name }}
     steps:
