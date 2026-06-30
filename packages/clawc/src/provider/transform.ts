@@ -61,155 +61,127 @@ function sdkKey(npm: string): string | undefined {
   return undefined
 }
 
-// TODO: fix this stupid inefficient dogshit function
 function normalizeMessages(
   msgs: ModelMessage[],
   model: Provider.Model,
   _options: Record<string, unknown>,
 ): ModelMessage[] {
-  const sanitizeToolResultOutput = (content: ToolResultPart) => {
+  const sanitizeToolResultOutput = (content: ToolResultPart): ToolResultPart => {
     if (content.output.type === "text" || content.output.type === "error-text") {
-      content.output.value = sanitizeSurrogates(content.output.value)
+      return {
+        ...content,
+        output: { ...content.output, value: sanitizeSurrogates(content.output.value) },
+      }
     }
     if (content.output.type === "content") {
-      content.output.value = content.output.value.map((item) => {
-        if (item.type === "text") {
-          item.text = sanitizeSurrogates(item.text)
-        }
-        return item
-      })
+      return {
+        ...content,
+        output: {
+          ...content.output,
+          value: content.output.value.map((item) =>
+            item.type === "text" ? { ...item, text: sanitizeSurrogates(item.text) } : item,
+          ),
+        },
+      }
     }
     return content
   }
 
-  msgs = msgs.map((msg) => {
+  const sanitizeMessage = (msg: ModelMessage): ModelMessage => {
     switch (msg.role) {
       case "tool":
         if (!Array.isArray(msg.content)) return msg
-        msg.content = msg.content.map((content) => {
-          if (content.type === "tool-result") {
-            return sanitizeToolResultOutput(content)
-          }
-          return content
-        })
-        return msg
+        return {
+          ...msg,
+          content: msg.content.map((content) =>
+            content.type === "tool-result" ? sanitizeToolResultOutput(content) : content,
+          ),
+        }
 
       case "system":
-        msg.content = sanitizeSurrogates(msg.content)
-        return msg
+        return { ...msg, content: sanitizeSurrogates(msg.content) }
 
       case "user":
         if (typeof msg.content === "string") {
-          msg.content = sanitizeSurrogates(msg.content)
-        } else {
-          msg.content = msg.content.map((content) => {
-            if (content.type === "text") {
-              content.text = sanitizeSurrogates(content.text)
-            }
-            return content
-          })
+          return { ...msg, content: sanitizeSurrogates(msg.content) }
         }
-        return msg
+        return {
+          ...msg,
+          content: msg.content.map((content) =>
+            content.type === "text" ? { ...content, text: sanitizeSurrogates(content.text) } : content,
+          ),
+        }
 
       case "assistant":
         if (typeof msg.content === "string") {
-          msg.content = sanitizeSurrogates(msg.content)
-        } else {
-          msg.content = msg.content.map((content) => {
+          return { ...msg, content: sanitizeSurrogates(msg.content) }
+        }
+        return {
+          ...msg,
+          content: msg.content.map((content) => {
             if (content.type === "text" || content.type === "reasoning") {
-              content.text = sanitizeSurrogates(content.text)
+              return { ...content, text: sanitizeSurrogates(content.text) }
             }
             if (content.type === "tool-result") {
               return sanitizeToolResultOutput(content)
             }
             return content
-          })
+          }),
         }
-        return msg
     }
-  })
+  }
 
-  // Anthropic rejects messages with empty content - filter out empty string messages
-  // and remove empty text/reasoning parts from array content
+  msgs = msgs.map(sanitizeMessage)
+
+  const filterEmptyContent = (msg: ModelMessage, providerKey: "anthropic" | "bedrock"): ModelMessage | undefined => {
+    if (typeof msg.content === "string") {
+      return msg.content === "" ? undefined : msg
+    }
+    if (!Array.isArray(msg.content)) return msg
+    const filtered = msg.content.filter((part) => {
+      if (part.type === "text") {
+        return part.text !== ""
+      }
+      if (part.type === "reasoning") {
+        return (
+          part.text.trim().length > 0 ||
+          part.providerOptions?.[providerKey]?.signature != null ||
+          part.providerOptions?.[providerKey]?.redactedData != null
+        )
+      }
+      return true
+    })
+    if (filtered.length === 0) return undefined
+    return { ...msg, content: filtered as any }
+  }
+
+  // Anthropic rejects messages with empty content
   if (model.api.npm === "@ai-sdk/anthropic") {
     msgs = msgs
-      .map((msg) => {
-        if (typeof msg.content === "string") {
-          if (msg.content === "") return undefined
-          return msg
-        }
-        if (!Array.isArray(msg.content)) return msg
-        const filtered = msg.content.filter((part) => {
-          if (part.type === "text") {
-            return part.text !== ""
-          }
-          if (part.type === "reasoning") {
-            return (
-              part.text.trim().length > 0 ||
-              part.providerOptions?.anthropic?.signature != null ||
-              part.providerOptions?.anthropic?.redactedData != null
-            )
-          }
-          return true
-        })
-        if (filtered.length === 0) return undefined
-        return { ...msg, content: filtered }
-      })
+      .map((msg) => filterEmptyContent(msg, "anthropic"))
       .filter((msg): msg is ModelMessage => msg !== undefined && msg.content !== "")
   }
 
   // Bedrock specific transforms
   if (model.api.npm === "@ai-sdk/amazon-bedrock") {
     msgs = msgs
-      .map((msg) => {
-        if (typeof msg.content === "string") {
-          if (msg.content === "") return undefined
-          return msg
-        }
-        if (!Array.isArray(msg.content)) return msg
-        const filtered = msg.content.filter((part) => {
-          if (part.type === "text") {
-            return part.text !== ""
-          }
-          if (part.type === "reasoning") {
-            return (
-              part.text.trim().length > 0 ||
-              part.providerOptions?.bedrock?.signature != null ||
-              part.providerOptions?.bedrock?.redactedData != null
-            )
-          }
-          return true
-        })
-        if (filtered.length === 0) return undefined
-        return { ...msg, content: filtered }
-      })
+      .map((msg) => filterEmptyContent(msg, "bedrock"))
       .filter((msg): msg is ModelMessage => msg !== undefined && msg.content !== "")
   }
 
   if (model.api.id.includes("claude")) {
     const scrub = (id: string) => id.replace(/[^a-zA-Z0-9_-]/g, "_")
+    const scrubToolCallIds = (content: any[]) =>
+      content.map((part) => {
+        if (part.type === "tool-call" || part.type === "tool-result") {
+          return { ...part, toolCallId: scrub(part.toolCallId) }
+        }
+        return part
+      })
+
     msgs = msgs.map((msg) => {
-      if (msg.role === "assistant" && Array.isArray(msg.content)) {
-        return {
-          ...msg,
-          content: msg.content.map((part) => {
-            if (part.type === "tool-call" || part.type === "tool-result") {
-              return { ...part, toolCallId: scrub(part.toolCallId) }
-            }
-            return part
-          }),
-        }
-      }
-      if (msg.role === "tool" && Array.isArray(msg.content)) {
-        return {
-          ...msg,
-          content: msg.content.map((part) => {
-            if (part.type === "tool-result") {
-              return { ...part, toolCallId: scrub(part.toolCallId) }
-            }
-            return part
-          }),
-        }
+      if ((msg.role === "assistant" || msg.role === "tool") && Array.isArray(msg.content)) {
+        return { ...msg, content: scrubToolCallIds(msg.content) }
       }
       return msg
     })
@@ -222,43 +194,34 @@ function normalizeMessages(
   ) {
     const scrub = (id: string) => {
       return id
-        .replace(/[^a-zA-Z0-9]/g, "") // Remove non-alphanumeric characters
-        .substring(0, 9) // Take first 9 characters
-        .padEnd(9, "0") // Pad with zeros if less than 9 characters
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .substring(0, 9)
+        .padEnd(9, "0")
     }
+    const scrubToolCallIds = (content: any[]) =>
+      content.map((part) => {
+        if (part.type === "tool-call" || part.type === "tool-result") {
+          return { ...part, toolCallId: scrub(part.toolCallId) }
+        }
+        return part
+      })
+
     const result: ModelMessage[] = []
     for (let i = 0; i < msgs.length; i++) {
       const msg = msgs[i]
       const nextMsg = msgs[i + 1]
 
-      if (msg.role === "assistant" && Array.isArray(msg.content)) {
-        msg.content = msg.content.map((part) => {
-          if (part.type === "tool-call" || part.type === "tool-result") {
-            return { ...part, toolCallId: scrub(part.toolCallId) }
-          }
-          return part
-        })
+      if ((msg.role === "assistant" || msg.role === "tool") && Array.isArray(msg.content)) {
+        result.push({ ...msg, content: scrubToolCallIds(msg.content) })
+      } else {
+        result.push(msg)
       }
-      if (msg.role === "tool" && Array.isArray(msg.content)) {
-        msg.content = msg.content.map((part) => {
-          if (part.type === "tool-result") {
-            return { ...part, toolCallId: scrub(part.toolCallId) }
-          }
-          return part
-        })
-      }
-      result.push(msg)
 
       // Fix message sequence: tool messages cannot be followed by user messages
       if (msg.role === "tool" && nextMsg?.role === "user") {
         result.push({
           role: "assistant",
-          content: [
-            {
-              type: "text",
-              text: "Done.",
-            },
-          ],
+          content: [{ type: "text", text: "Done." }],
         })
       }
     }
