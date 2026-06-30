@@ -402,3 +402,19 @@ input:where([type="button"], [type="reset"], [type="submit"]),
     font-size: 16px !important;
   }
 }
+
+/*
+  Respect reduced motion preferences.
+  Components opt into specific reduced-motion behavior where they have a more
+  meaningful fallback than near-instant transitions.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
