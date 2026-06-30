@@ -273,11 +273,11 @@ export default function () {
                       return (
                         <div class="relative bg-background-stronger w-screen h-screen overflow-hidden flex flex-col">
                           <header class="h-12 px-6 py-2 flex items-center justify-between self-stretch bg-background-base border-b border-border-weak-base">
-                            <div class="">
-                              <a href="https://clawc.ai">
-                                <Mark />
-                              </a>
-                            </div>
+<div class="">
+  <a href="https://github.com/BlusceLabs/clawc">
+    <Mark />
+  </a>
+</div>
                             <div class="flex gap-3 items-center">
                               <IconButton
                                 as={"a"}
