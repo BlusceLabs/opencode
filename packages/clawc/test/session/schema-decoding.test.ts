@@ -238,7 +238,7 @@ describe("SessionStatus.Info", () => {
         reason: "free_tier_limit",
         provider: "clawc",
         title: "Free limit reached",
-        message: "Subscribe to OpenCode Go.",
+        message: "Subscribe to ClawC Go.",
         label: "subscribe",
         link: "https://clawc.ai/go",
       },

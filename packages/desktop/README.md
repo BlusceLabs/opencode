@@ -1,6 +1,6 @@
-# OpenCode Desktop
+# ClawC Desktop
 
-The OpenCode Desktop app, built with Electron.
+The ClawC Desktop app, built with Electron.
 
 ## Development
 

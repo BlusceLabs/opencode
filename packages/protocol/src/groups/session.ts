@@ -302,7 +302,7 @@ export const makeSessionGroup = <I extends HttpApiMiddleware.AnyId, S>(sessionLo
           OpenApi.annotations({
             identifier: "v2.session.interrupt",
             summary: "Interrupt session execution",
-            description: "Interrupt active execution owned by this OpenCode process. Idle interruption is a no-op.",
+            description: "Interrupt active execution owned by this ClawC process. Idle interruption is a no-op.",
           }),
         ),
     )

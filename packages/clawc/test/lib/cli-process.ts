@@ -16,7 +16,7 @@
 // Today only `clawc.run` is fully wired. The shape supports adding more
 // builders (`clawc.serve(opts)`, `clawc.acp(opts)`, `clawc.auth(...)`)
 // without changing the fixture. Long-lived commands like `serve` will need a
-// different return shape — see the TODO at the bottom of OpencodeCli.
+// different return shape — see the TODO at the bottom of ClawcCli.
 import { test, type TestOptions } from "bun:test"
 import { FSUtil } from "@clawc/core/fs-util"
 import { AppProcess } from "@clawc/core/process"
@@ -150,7 +150,7 @@ export type AcpHandle = {
   readonly exited: Promise<number>
 }
 
-export type OpencodeCli = {
+export type ClawcCli = {
   // High-level: run a single prompt against the test model. Short-lived.
   readonly run: (message: string, opts?: RunOpts) => Effect.Effect<RunResult>
   readonly startRun: (message: string, opts?: RunOpts) => Effect.Effect<RunHandle, never, Scope.Scope>
@@ -177,7 +177,7 @@ export type OpencodeCli = {
 export type CliFixture = {
   readonly llm: TestLLMServer["Service"]
   readonly home: string
-  readonly clawc: OpencodeCli
+  readonly clawc: ClawcCli
 }
 
 // Provisions a TestLLMServer + tmpdir + spawn helper and invokes fn. Cleans
@@ -462,7 +462,7 @@ export function withCliFixture<A, E>(
       } satisfies AcpHandle
     })
 
-    const clawc: OpencodeCli = { run, startRun, serve, acp, spawn, expectExit, parseJsonEvents }
+    const clawc: ClawcCli = { run, startRun, serve, acp, spawn, expectExit, parseJsonEvents }
 
     return yield* fn({ llm, home, clawc })
     // FetchHttpClient is provided so test bodies can `yield* HttpClient.HttpClient`

@@ -1,11 +1,11 @@
-import { OpenCode } from "@clawc/client/effect"
+import { ClawC } from "@clawc/client/effect"
 import { PermissionSaved } from "@clawc/core/permission/saved"
 import { ApplicationTools } from "@clawc/core/tool/application-tools"
 import { createEmbeddedRoutes } from "@clawc/server/routes"
 import { Context, Effect, Layer, Scope } from "effect"
 import { FetchHttpClient, HttpRouter, HttpServer } from "effect/unstable/http"
 
-export const create = Effect.fn("OpenCode.create")(function* () {
+export const create = Effect.fn("ClawC.create")(function* () {
   const scope = yield* Scope.Scope
   const memoMap = yield* Layer.makeMemoMap
   const context = yield* Layer.buildWithMemoMap(
@@ -30,7 +30,7 @@ export const create = Effect.fn("OpenCode.create")(function* () {
   const fetch = Object.assign((input: RequestInfo | URL, init?: RequestInit) => web.handler(new Request(input, init)), {
     preconnect: () => undefined,
   }) satisfies typeof globalThis.fetch
-  const client = yield* OpenCode.make({ baseUrl: "http://clawc.local" }).pipe(
+  const client = yield* ClawC.make({ baseUrl: "http://clawc.local" }).pipe(
     Effect.provide(FetchHttpClient.layer),
     Effect.provideService(FetchHttpClient.Fetch, fetch),
   )
@@ -42,6 +42,6 @@ export const create = Effect.fn("OpenCode.create")(function* () {
 
 export type Interface = Effect.Success<ReturnType<typeof create>>
 
-export class Service extends Context.Service<Service, Interface>()("@clawc/sdk-next/OpenCode") {}
+export class Service extends Context.Service<Service, Interface>()("@clawc/sdk-next/ClawC") {}
 
 export const layer = Layer.effect(Service, create())

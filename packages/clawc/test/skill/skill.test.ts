@@ -499,7 +499,7 @@ name: clawc-skill
 description: A skill in the .clawc/skill directory.
 ---
 
-# OpenCode Skill
+# ClawC Skill
 `,
               ),
             ]),
@@ -546,7 +546,7 @@ name: clawc-skill
 description: A skill in the .clawc/skill directory.
 ---
 
-# OpenCode Skill
+# ClawC Skill
 `,
               ),
               Bun.write(
@@ -556,7 +556,7 @@ name: clawc-skill
 description: A skill in the .clawc/skills directory.
 ---
 
-# OpenCode Skill
+# ClawC Skill
 `,
               ),
             ]),

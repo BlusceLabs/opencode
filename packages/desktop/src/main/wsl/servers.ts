@@ -17,7 +17,7 @@ import { expectClawcVersion, pendingRestartAfterWslInstall, wslServerIdsToStartO
 import { clearWslDistroState, wslServerIdToRestart } from "./policy"
 import {
   installWslDistro,
-  installWslOpencode,
+  installWslClawc,
   installWslRuntimeElevated,
   listInstalledWslDistros,
   listOnlineWslDistros,
@@ -25,7 +25,7 @@ import {
   probeWslDistro,
   probeWslRuntime,
   readWslCommandVersion,
-  resolveWslOpencode,
+  resolveWslClawc,
   summarize,
 } from "./runtime"
 
@@ -47,7 +47,7 @@ type WslServersControllerOptions = {
   logger?: ControllerLogger
   readServers?: () => WslServerConfig[]
   writeServers?: (servers: WslServerConfig[]) => void
-  resolveOpencode?: typeof resolveWslOpencode
+  resolveClawc?: typeof resolveWslClawc
   readCommandVersion?: typeof readWslCommandVersion
 }
 
@@ -119,7 +119,7 @@ export function createWslServersController(
     updateServer(id, (item) => ({ ...item, runtime }))
   }
 
-  const setOpencodeCheck = (distro: string, check: WslClawcCheck) => {
+  const setClawcCheck = (distro: string, check: WslClawcCheck) => {
     setState({
       clawcChecks: {
         ...state.clawcChecks,
@@ -128,27 +128,27 @@ export function createWslServersController(
     })
   }
 
-  const checkOpencode = async (distro: string, opts?: { signal?: AbortSignal }) => {
-    const resolved = await (options?.resolveOpencode ?? resolveWslOpencode)(distro, opts)
+  const checkClawc = async (distro: string, opts?: { signal?: AbortSignal }) => {
+    const resolved = await (options?.resolveClawc ?? resolveWslClawc)(distro, opts)
     const version = resolved
       ? await (options?.readCommandVersion ?? readWslCommandVersion)(resolved, distro, opts)
       : null
     return clawcCheck(distro, resolved, version, appVersion)
   }
 
-  const refreshOpencodeCheck = async (distro: string, opts?: { signal?: AbortSignal }) => {
-    setOpencodeCheck(distro, await checkOpencode(distro, opts))
+  const refreshClawcCheck = async (distro: string, opts?: { signal?: AbortSignal }) => {
+    setClawcCheck(distro, await checkClawc(distro, opts))
   }
 
   const hasServer = (id: string, distro: string) => {
     return state.servers.some((item) => item.config.id === id && item.config.distro === distro)
   }
 
-  const refreshOpencodeCheckBackground = (id: string, distro: string) => {
-    void checkOpencode(distro)
+  const refreshClawcCheckBackground = (id: string, distro: string) => {
+    void checkClawc(distro)
       .then((check) => {
         if (!hasServer(id, distro)) return
-        setOpencodeCheck(distro, check)
+        setClawcCheck(distro, check)
       })
       .catch((error) => {
         const message = error instanceof Error ? error.message : String(error)
@@ -156,13 +156,13 @@ export function createWslServersController(
       })
   }
 
-  const refreshOpencodeChecks = async () => {
+  const refreshClawcChecks = async () => {
     await Promise.all(
       state.servers.map((item) =>
-        checkOpencode(item.config.distro)
+        checkClawc(item.config.distro)
           .then((check) => {
             if (!hasServer(item.config.id, item.config.distro)) return
-            setOpencodeCheck(item.config.distro, check)
+            setClawcCheck(item.config.distro, check)
           })
           .catch((error) => {
             const message = error instanceof Error ? error.message : String(error)
@@ -227,7 +227,7 @@ export function createWslServersController(
         setRuntime(id, { kind: "failed", message })
         logger?.error("wsl sidecar exited", { id, distro: item.config.distro, code, signal })
       })
-      refreshOpencodeCheckBackground(id, item.config.distro)
+      refreshClawcCheckBackground(id, item.config.distro)
       logger?.log("wsl sidecar ready", { id, distro: item.config.distro, url: sidecar.url })
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error)
@@ -279,7 +279,7 @@ export function createWslServersController(
 
     async initialize() {
       refreshFromStore()
-      void refreshOpencodeChecks()
+      void refreshClawcChecks()
       for (const id of wslServerIdsToStartOnInitialize(state.servers.map((item) => item.config))) void startServer(id)
     },
 
@@ -334,19 +334,19 @@ export function createWslServersController(
       })
     },
 
-    async probeOpencode(name: string) {
+    async probeClawc(name: string) {
       await runJob({ kind: "probe-clawc", distro: name, startedAt: Date.now() }, async (abort) => {
-        await refreshOpencodeCheck(name, { signal: abort.signal })
+        await refreshClawcCheck(name, { signal: abort.signal })
       })
     },
 
-    async installOpencode(name: string) {
+    async installClawc(name: string) {
       await runJob({ kind: "install-clawc", distro: name, startedAt: Date.now() }, async (abort) => {
-        const result = await installWslOpencode(appVersion, name, { signal: abort.signal })
+        const result = await installWslClawc(appVersion, name, { signal: abort.signal })
         if (result.code !== 0) {
-          throw new Error(summarize(result.stderr || result.stdout) || "OpenCode installation failed")
+          throw new Error(summarize(result.stderr || result.stdout) || "ClawC installation failed")
         }
-        await refreshOpencodeCheck(name, { signal: abort.signal })
+        await refreshClawcCheck(name, { signal: abort.signal })
         expectClawcVersion(state.clawcChecks[name]?.version ?? null, appVersion, name)
         const id = wslServerIdToRestart(state.servers, name)
         if (id) await startServer(id)

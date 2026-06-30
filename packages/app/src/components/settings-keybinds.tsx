@@ -17,9 +17,7 @@ const IconV2 = lazy(() => import("@clawc/ui/v2/icon").then((module) => ({ defaul
 const IconButtonV2 = lazy(() =>
   import("@clawc/ui/v2/icon-button-v2").then((module) => ({ default: module.IconButtonV2 })),
 )
-const TextInputV2 = lazy(() =>
-  import("@clawc/ui/v2/text-input-v2").then((module) => ({ default: module.TextInputV2 })),
-)
+const TextInputV2 = lazy(() => import("@clawc/ui/v2/text-input-v2").then((module) => ({ default: module.TextInputV2 })))
 const SettingsListV2 = lazy(() =>
   import("./settings-v2/parts/list").then((module) => ({ default: module.SettingsListV2 })),
 )

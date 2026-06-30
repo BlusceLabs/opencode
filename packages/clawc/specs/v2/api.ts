@@ -1,9 +1,9 @@
 // @ts-nocheck
 
-import { OpenCode } from "@clawc/core"
+import { ClawC } from "@clawc/core"
 import { ReadTool } from "@clawc/core/tools"
 
-const clawc = OpenCode.make({})
+const clawc = ClawC.make({})
 
 clawc.tool.add(ReadTool)
 

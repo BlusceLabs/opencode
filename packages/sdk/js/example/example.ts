@@ -1,8 +1,8 @@
-import { createOpencodeClient, createOpencodeServer } from "@clawc/sdk"
+import { createClawcClient, createClawcServer } from "@clawc/sdk"
 import { pathToFileURL } from "bun"
 
-const server = await createOpencodeServer()
-const client = createOpencodeClient({ baseUrl: server.url })
+const server = await createClawcServer()
+const client = createClawcClient({ baseUrl: server.url })
 
 const input = await Array.fromAsync(new Bun.Glob("packages/core/*.ts").scan())
 

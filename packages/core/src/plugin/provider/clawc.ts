@@ -40,7 +40,7 @@ function oauth(http: HttpClient.HttpClient) {
     method: {
       id: methodID,
       type: "oauth",
-      label: "OpenCode Console account",
+      label: "ClawC Console account",
     },
     authorize: () =>
       Effect.gen(function* () {
@@ -74,7 +74,7 @@ function oauth(http: HttpClient.HttpClient) {
   } satisfies IntegrationOAuthMethodRegistration
 }
 
-export const OpencodePlugin = define<HttpClient.HttpClient | EventV2.Service | Scope.Scope>({
+export const ClawcPlugin = define<HttpClient.HttpClient | EventV2.Service | Scope.Scope>({
   id: "clawc",
   effect: Effect.fn(function* (ctx) {
     const events = yield* EventV2.Service
@@ -82,7 +82,7 @@ export const OpencodePlugin = define<HttpClient.HttpClient | EventV2.Service | S
     let connected = false
     let providers: typeof ConfigV1.Info.Type.provider | undefined
 
-    const load = Effect.fn("OpencodePlugin.load")(function* () {
+    const load = Effect.fn("ClawcPlugin.load")(function* () {
       const connection = yield* ctx.integration.connection.active("clawc")
       const credential = connection
         ? yield* ctx.integration.connection.resolve(connection).pipe(Effect.catch(() => Effect.succeed(undefined)))
@@ -91,7 +91,7 @@ export const OpencodePlugin = define<HttpClient.HttpClient | EventV2.Service | S
       providers = credential
         ? yield* fetchProviders(http, credential).pipe(
             Effect.catch((cause) =>
-              Effect.logWarning("failed to load OpenCode provider config", { cause }).pipe(Effect.as(undefined)),
+              Effect.logWarning("failed to load ClawC provider config", { cause }).pipe(Effect.as(undefined)),
             ),
           )
         : undefined
@@ -99,7 +99,7 @@ export const OpencodePlugin = define<HttpClient.HttpClient | EventV2.Service | S
 
     yield* ctx.integration.transform((draft) => {
       draft.update("clawc", (integration) => {
-        integration.name = "OpenCode"
+        integration.name = "ClawC"
       })
       draft.method.update(oauth(http))
       draft.method.update({ integrationID: "clawc", method: { type: "key", label: "API key (service account)" } })

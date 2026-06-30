@@ -4,7 +4,7 @@ import { Spec } from "../framework/spec"
 declare const CLAWC_CLI_NAME: string | undefined
 
 export const Commands = Spec.make(typeof CLAWC_CLI_NAME === "string" ? CLAWC_CLI_NAME : "clawc", {
-  description: "OpenCode 2.0 preview command line interface",
+  description: "ClawC 2.0 preview command line interface",
   commands: [
     Spec.make("api", {
       description: "Make a request to the running server",

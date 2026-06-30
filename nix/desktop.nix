@@ -83,7 +83,7 @@ stdenv.mkDerivation (finalAttrs: {
     + lib.optionalString stdenv.hostPlatform.isDarwin ''
       mkdir -p $out/Applications
       mv dist/mac*/*.app $out/Applications
-      makeWrapper "$out/Applications/ClawC.app/Contents/MacOS/OpenCode" $out/bin/clawc-desktop
+      makeWrapper "$out/Applications/ClawC.app/Contents/MacOS/ClawC" $out/bin/clawc-desktop
     ''
     + lib.optionalString stdenv.hostPlatform.isLinux ''
       mkdir -p $out/opt/clawc-desktop
@@ -103,7 +103,7 @@ stdenv.mkDerivation (finalAttrs: {
   ];
 
   meta = {
-    description = "OpenCode Desktop App";
+    description = "ClawC Desktop App";
     mainProgram = "clawc-desktop";
     inherit (clawc.meta) homepage license platforms;
   };

@@ -10,27 +10,29 @@
 
 ## Top Surface Areas
 
-| Area | Count / Note |
-|------|--------------|
-| `packages/*` | 2,233 files — the bulk of the work |
-| TypeScript (`.ts`) | 1,180 files |
-| MDX docs | 601 files |
-| TSX | 263 files |
-| JSON configs | 137 files |
-| GitHub workflows | 22 files |
-| `README.md`, `CONTRIBUTING.md`, `SECURITY.md`, `LICENSE` | public-facing files |
-| `install` script | curl path points to `BlusceLabs/clawc` |
-| `package.json` | root package name `clawc`, workspace deps `@clawc/*` |
-| `bunfig.toml`, `sst.config.ts`, `turbo.json` | tooling configs |
+| Area                                                     | Count / Note                                         |
+| -------------------------------------------------------- | ---------------------------------------------------- |
+| `packages/*`                                             | 2,233 files — the bulk of the work                   |
+| TypeScript (`.ts`)                                       | 1,180 files                                          |
+| MDX docs                                                 | 601 files                                            |
+| TSX                                                      | 263 files                                            |
+| JSON configs                                             | 137 files                                            |
+| GitHub workflows                                         | 22 files                                             |
+| `README.md`, `CONTRIBUTING.md`, `SECURITY.md`, `LICENSE` | public-facing files                                  |
+| `install` script                                         | curl path points to `BlusceLabs/clawc`               |
+| `package.json`                                           | root package name `clawc`, workspace deps `@clawc/*` |
+| `bunfig.toml`, `sst.config.ts`, `turbo.json`             | tooling configs                                      |
 
 ## Package Scope to Decide
 
 Current npm scope: `@clawc/*`
 Likely new scopes to choose from:
+
 - `@varth/*`
 - `@clawc/*`
 
 Most-referenced packages (from code + docs + specs):
+
 - `@clawc/sdk`
 - `@clawc/plugin`
 - `@clawc/script`

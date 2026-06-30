@@ -76,7 +76,7 @@ export const InstanceHttpApi = HttpApi.make("clawc-instance")
   .addHttpApi(WorkspaceApi)
   .middleware(SchemaErrorMiddleware)
 
-export const OpenCodeHttpApi = HttpApi.make("clawc")
+export const ClawcHttpApi = HttpApi.make("clawc")
   .addHttpApi(RootHttpApi)
   .addHttpApi(EventApi)
   .addHttpApi(InstanceHttpApi)

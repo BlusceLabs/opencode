@@ -32,7 +32,7 @@ const SKILL_PATTERN = "**/SKILL.md"
 const CUSTOMIZE_CLAWC_SKILL_NAME = "customize-clawc"
 const CUSTOMIZE_CLAWC_SKILL_DESCRIPTION =
   "Use ONLY when the user is editing or creating clawc's own configuration: clawc.json, clawc.jsonc, files under .clawc/, or files under ~/.config/clawc/. Also use when creating or fixing clawc agents, subagents, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring clawc itself."
-const CUSTOMIZE_CLAWC_SKILL_BODY = SkillPlugin.CustomizeOpencodeContent
+const CUSTOMIZE_CLAWC_SKILL_BODY = SkillPlugin.CustomizeClawcContent
 
 export const Info = Schema.Struct({
   name: Schema.String,

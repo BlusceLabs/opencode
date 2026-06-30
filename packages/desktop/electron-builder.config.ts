@@ -74,7 +74,7 @@ const getBase = (appId: string): Configuration => ({
     sign: true,
   },
   protocols: {
-    name: "OpenCode",
+    name: "ClawC",
     schemes: ["clawc"],
   },
   win: {
@@ -115,7 +115,7 @@ function getConfig() {
       return {
         ...base,
         appId,
-        productName: "OpenCode Dev",
+        productName: "ClawC Dev",
         rpm: { packageName: "clawc-dev" },
       }
     }
@@ -123,8 +123,8 @@ function getConfig() {
       return {
         ...base,
         appId,
-        productName: "OpenCode Beta",
-        protocols: { name: "OpenCode Beta", schemes: ["clawc"] },
+        productName: "ClawC Beta",
+        protocols: { name: "ClawC Beta", schemes: ["clawc"] },
         publish: { provider: "github", owner: "BlusceLabs", repo: "clawc-beta", channel: "latest" },
         rpm: { packageName: "clawc-beta" },
       }
@@ -133,8 +133,8 @@ function getConfig() {
       return {
         ...base,
         appId,
-        productName: "OpenCode",
-        protocols: { name: "OpenCode", schemes: ["clawc"] },
+        productName: "ClawC",
+        protocols: { name: "ClawC", schemes: ["clawc"] },
         publish: { provider: "github", owner: "BlusceLabs", repo: "clawc", channel: "latest" },
         deb: { fpm: [legacyDesktopEntryFpm] },
         rpm: { packageName: "clawc", fpm: [legacyDesktopEntryFpm] },

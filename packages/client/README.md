@@ -1,6 +1,6 @@
 # @clawc/client
 
-Private generation target for clients derived directly from OpenCode's authoritative Effect `HttpApi`.
+Private generation target for clients derived directly from ClawC's authoritative Effect `HttpApi`.
 
 ## Entrypoints
 
@@ -16,9 +16,9 @@ The Promise root remains structural and has no Core or Effect runtime dependency
 Effect consumers construct canonical decoded inputs:
 
 ```ts
-import { AbsolutePath, Location, OpenCode, Prompt } from "@clawc/client/effect"
+import { AbsolutePath, Location, ClawC, Prompt } from "@clawc/client/effect"
 
-const client = yield * OpenCode.make({ baseUrl: "https://clawc.example" })
+const client = yield * ClawC.make({ baseUrl: "https://clawc.example" })
 yield *
   client.sessions.create({
     location: Location.Ref.make({ directory: AbsolutePath.make("/workspace") }),

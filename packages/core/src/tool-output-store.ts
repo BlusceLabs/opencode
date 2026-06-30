@@ -179,7 +179,7 @@ export const layer = Layer.effect(
         if (!entry.startsWith("tool_")) continue
         const file = path.join(directory, entry)
         const info = yield* fs.stat(file).pipe(Effect.catch(() => Effect.void))
-        const modified = info?.mtime.pipe(
+        const modified = info?.mtime?.pipe(
           Option.map((date) => date.getTime()),
           Option.getOrElse(() => 0),
         )

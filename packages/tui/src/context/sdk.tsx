@@ -1,4 +1,4 @@
-import { createOpencodeClient } from "@clawc/sdk/v2"
+import { createClawcClient } from "@clawc/sdk/v2"
 import type { GlobalEvent } from "@clawc/sdk/v2"
 import { Flag } from "@clawc/core/flag/flag"
 import { createSimpleContext } from "./helper"
@@ -21,7 +21,7 @@ export const { use: useSDK, provider: SDKProvider } = createSimpleContext({
     let sse: AbortController | undefined
 
     function createSDK() {
-      return createOpencodeClient({
+      return createClawcClient({
         baseUrl: props.url,
         signal: abort.signal,
         directory: props.directory,

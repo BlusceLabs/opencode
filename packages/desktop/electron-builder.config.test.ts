@@ -41,7 +41,7 @@ test("keeps a hidden prod launcher for old Linux pins", async () => {
   expect(config.rpm?.fpm?.[0]).toEndWith(`${legacyDesktopEntry}=/usr/share/applications/clawc-desktop.desktop`)
 
   const desktop = await Bun.file(legacyDesktopEntry).text()
-  expect(desktop).toContain("Exec=/opt/OpenCode/ai.clawc.desktop %U")
+  expect(desktop).toContain("Exec=/opt/ClawC/ai.clawc.desktop %U")
   expect(desktop).toContain("Icon=ai.clawc.desktop")
   expect(desktop).toContain("StartupWMClass=ai.clawc.desktop")
   expect(desktop).toContain("NoDisplay=true")

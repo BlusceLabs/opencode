@@ -6,7 +6,7 @@ import { Integration } from "@clawc/core/integration"
 import { ModelV2 } from "@clawc/core/model"
 import { PluginV2 } from "@clawc/core/plugin"
 import { PluginHost } from "@clawc/core/plugin/host"
-import { OpencodePlugin } from "@clawc/core/plugin/provider/clawc"
+import { ClawcPlugin } from "@clawc/core/plugin/provider/clawc"
 import { ProviderV2 } from "@clawc/core/provider"
 import { testEffect } from "../lib/effect"
 import { PluginTestLayer } from "./fixture"
@@ -17,7 +17,7 @@ const addPlugin = Effect.fn(function* () {
   const plugin = yield* PluginV2.Service
   const host = yield* PluginHost.make(plugin)
   const integration = yield* Integration.Service
-  yield* OpencodePlugin.effect(host).pipe(Effect.provideService(Integration.Service, integration))
+  yield* ClawcPlugin.effect(host).pipe(Effect.provideService(Integration.Service, integration))
 })
 
 function required<T>(value: T | undefined): T {
@@ -48,7 +48,7 @@ function withEnv<A, E, R>(vars: Record<string, string | undefined>, effect: () =
 
 const cost = (input: number, output = 0) => [{ input, output, cache: { read: 0, write: 0 } }]
 
-describe("OpencodePlugin", () => {
+describe("ClawcPlugin", () => {
   it.effect("registers account and service account methods", () =>
     Effect.gen(function* () {
       yield* addPlugin()
@@ -56,14 +56,14 @@ describe("OpencodePlugin", () => {
         {
           id: Integration.MethodID.make("device"),
           type: "oauth",
-          label: "OpenCode Console account",
+          label: "ClawC Console account",
         },
         { type: "key", label: "API key (service account)" },
       ])
     }),
   )
 
-  it.live("loads providers and models from the connected OpenCode server", () =>
+  it.live("loads providers and models from the connected ClawC server", () =>
     Effect.acquireUseRelease(
       Effect.sync(() => {
         const authorization: Array<string | null> = []

@@ -6,9 +6,9 @@ import { define } from "./internal"
 import { Effect } from "effect"
 import { AbsolutePath } from "../schema"
 import { SkillV2 } from "../skill"
-import customizeOpencodeContent from "./skill/customize-clawc.md" with { type: "text" }
+import customizeClawcContent from "./skill/customize-clawc.md" with { type: "text" }
 
-export const CustomizeOpencodeContent = customizeOpencodeContent
+export const CustomizeClawcContent = customizeClawcContent
 
 export const Plugin = define({
   id: "skill",
@@ -22,7 +22,7 @@ export const Plugin = define({
             description:
               "Use ONLY when the user is editing or creating clawc's own configuration: clawc.json, clawc.jsonc, files under .clawc/, or files under ~/.config/clawc/. Also use when creating or fixing clawc agents, subagents, commands, skills, plugins, MCP servers, or permission rules. Do not use for the user's own application code, or for any project that is not configuring clawc itself.",
             location: AbsolutePath.make("/builtin/customize-clawc.md"),
-            content: CustomizeOpencodeContent,
+            content: CustomizeClawcContent,
           }),
         }),
       )

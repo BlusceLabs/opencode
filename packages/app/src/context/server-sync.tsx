@@ -62,11 +62,7 @@ export const loadLspQuery = (scope: ServerScope, directory: string, sdk: ClawcCl
     queryFn: () => sdk.lsp.status().then((r) => r.data ?? []),
   })
 
-function makeQueryOptionsApi(
-  scope: ServerScope,
-  serverSDK: () => ClawcClient,
-  sdkFor: (dir: PathKey) => ClawcClient,
-) {
+function makeQueryOptionsApi(scope: ServerScope, serverSDK: () => ClawcClient, sdkFor: (dir: PathKey) => ClawcClient) {
   return {
     globalConfig: () => loadGlobalConfigQuery(scope, serverSDK()),
     projects: () => loadProjectsQuery(scope, serverSDK()),

@@ -161,7 +161,7 @@ const RECORDED_SCENARIOS = [
   },
   {
     id: "clawc-proxy",
-    name: "OpenCode proxy",
+    name: "ClawC proxy",
     providerID: ProviderV2.ID.clawc,
     modelID: "gpt-5.2-codex",
     cassette: "session/native-zen-tool-loop",
@@ -171,7 +171,7 @@ const RECORDED_SCENARIOS = [
     config: (model) =>
       providerConfig({
         providerID: ProviderV2.ID.clawc,
-        name: "OpenCode Zen",
+        name: "ClawC Zen",
         env: ["CLAWC_CONSOLE_TOKEN"],
         npm: "@ai-sdk/openai-compatible",
         api: zenURL(process.env.CLAWC_RECORD_ZEN_CONNECTION ?? "fixture"),

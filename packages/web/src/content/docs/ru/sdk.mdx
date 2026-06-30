@@ -1,6 +1,6 @@
 ---
 title: SDK
-description: Типобезопасный JS-клиент для сервера opencode.
+description: Типобезопасный JS-клиент для сервера clawc.
 ---
 
 import config from "../../../../config.mjs"
@@ -25,12 +25,12 @@ npm install @clawc/sdk
 
 ## Создать клиента
 
-Создайте экземпляр opencode:
+Создайте экземпляр clawc:
 
 ```javascript
-import { createOpencode } from "@clawc/sdk"
+import { createClawc } from "@clawc/sdk"
 
-const { client } = await createOpencode()
+const { client } = await createClawc()
 ```
 
 Это запускает и сервер, и клиент.
@@ -49,12 +49,12 @@ const { client } = await createOpencode()
 
 ## Конфигурация
 
-Вы можете передать объект конфигурации для настройки поведения. Экземпляр по-прежнему получает ваш `opencode.json`, но вы можете переопределить или добавить встроенную конфигурацию:
+Вы можете передать объект конфигурации для настройки поведения. Экземпляр по-прежнему получает ваш `clawc.json`, но вы можете переопределить или добавить встроенную конфигурацию:
 
 ```javascript
-import { createOpencode } from "@clawc/sdk"
+import { createClawc } from "@clawc/sdk"
 
-const opencode = await createOpencode({
+const clawc = await createClawc({
   hostname: "127.0.0.1",
   port: 4096,
   config: {
@@ -62,19 +62,19 @@ const opencode = await createOpencode({
   },
 })
 
-console.log(`Server running at ${opencode.server.url}`)
+console.log(`Server running at ${clawc.server.url}`)
 
-opencode.server.close()
+clawc.server.close()
 ```
 
 ## Только клиент
 
-Если у вас уже есть работающий экземпляр opencode, вы можете создать экземпляр клиента для подключения к нему:
+Если у вас уже есть работающий экземпляр clawc, вы можете создать экземпляр клиента для подключения к нему:
 
 ```javascript
-import { createOpencodeClient } from "@clawc/sdk"
+import { createClawcClient } from "@clawc/sdk"
 
-const client = createOpencodeClient({
+const client = createClawcClient({
   baseUrl: "http://localhost:4096",
 })
 ```
@@ -376,7 +376,7 @@ await client.session.prompt({
 ```javascript
 // Search and read files
 const textResults = await client.find.text({
-  query: { pattern: "function.*opencode" },
+  query: { pattern: "function.*clawc" },
 })
 
 const files = await client.find.files({

@@ -1,13 +1,13 @@
 # @clawc/sdk-next
 
-Effect-native scoped OpenCode host for in-process applications. This transitional package will replace the existing generated `@clawc/sdk` after its consumers migrate.
+Effect-native scoped ClawC host for in-process applications. This transitional package will replace the existing generated `@clawc/sdk` after its consumers migrate.
 
 The SDK executes Server's assembled HTTP router in memory. It opens no listener and performs no network I/O, while preserving the same routing, middleware, handlers, codecs, and errors as the network client.
 
 ```ts
-import { OpenCode } from "@clawc/sdk-next"
+import { ClawC } from "@clawc/sdk-next"
 
-const clawc = yield * OpenCode.create()
+const clawc = yield * ClawC.create()
 const session = yield * clawc.sessions.get({ sessionID })
 ```
 
@@ -19,11 +19,11 @@ The same constructor is available as a service Layer:
 
 ```ts
 const program = Effect.gen(function* () {
-  const clawc = yield* OpenCode.Service
+  const clawc = yield* ClawC.Service
   return yield* clawc.sessions.get({ sessionID })
 })
 
-yield * program.pipe(Effect.provide(OpenCode.layer))
+yield * program.pipe(Effect.provide(ClawC.layer))
 ```
 
-`OpenCode.layer` adapts `OpenCode.create()` for dependency injection; it does not define another host implementation.
+`ClawC.layer` adapts `ClawC.create()` for dependency injection; it does not define another host implementation.

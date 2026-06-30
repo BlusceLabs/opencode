@@ -9,13 +9,13 @@ test("embedded client uses the real router and handlers", async () => {
   const directory = await mkdtemp(join(tmpdir(), "clawc-embedded-"))
   const database = Flag.CLAWC_DB
   Flag.CLAWC_DB = join(directory, "clawc.sqlite")
-  const { AbsolutePath, Agent, Location, Model, OpenCode, Prompt, Provider, Session, Tool } = await import("../src")
+  const { AbsolutePath, Agent, Location, Model, ClawC, Prompt, Provider, Session, Tool } = await import("../src")
   const sessionID = Session.ID.make(`ses_embedded_${crypto.randomUUID()}`)
   const model = Model.Ref.make({ id: Model.ID.make("embedded"), providerID: Provider.ID.make("test") })
 
   try {
     const program = Effect.gen(function* () {
-      const clawc = yield* OpenCode.create()
+      const clawc = yield* ClawC.create()
       yield* clawc.tools.register({
         embedded_tool: Tool.make({
           description: "Embedded test tool",
@@ -92,18 +92,18 @@ test("embedded client is available as a Layer service", async () => {
   const directory = await mkdtemp(join(tmpdir(), "clawc-embedded-layer-"))
   const database = Flag.CLAWC_DB
   Flag.CLAWC_DB = join(directory, "clawc.sqlite")
-  const { AbsolutePath, Location, OpenCode, Session } = await import("../src")
+  const { AbsolutePath, Location, ClawC, Session } = await import("../src")
   const sessionID = Session.ID.make(`ses_embedded_${crypto.randomUUID()}`)
 
   try {
     const created = await Effect.runPromise(
       Effect.gen(function* () {
-        const clawc = yield* OpenCode.Service
+        const clawc = yield* ClawC.Service
         return yield* clawc.sessions.create({
           id: sessionID,
           location: Location.Ref.make({ directory: AbsolutePath.make(directory) }),
         })
-      }).pipe(Effect.provide(OpenCode.layer), Effect.scoped),
+      }).pipe(Effect.provide(ClawC.layer), Effect.scoped),
     )
 
     expect(created.id).toBe(sessionID)

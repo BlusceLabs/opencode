@@ -213,14 +213,10 @@ export function DialogAddWslServer(props: DialogWslServerProps = {}) {
     }
     if (clawcCheck()?.error) return clawcCheck()!.error
     if (clawcCheck()?.matchesDesktop === false) {
-      return distro
-        ? language.t("wsl.onboarding.updateClawcIn", { distro })
-        : language.t("wsl.onboarding.updateClawc")
+      return distro ? language.t("wsl.onboarding.updateClawcIn", { distro }) : language.t("wsl.onboarding.updateClawc")
     }
     if (ClawcReady()) {
-      return distro
-        ? language.t("wsl.onboarding.ClawcReadyIn", { distro })
-        : language.t("wsl.onboarding.ClawcReady")
+      return distro ? language.t("wsl.onboarding.ClawcReadyIn", { distro }) : language.t("wsl.onboarding.ClawcReady")
     }
     return distro
       ? language.t("wsl.onboarding.installClawcIn", { distro })

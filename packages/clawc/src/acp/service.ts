@@ -30,7 +30,7 @@ import {
   type SetSessionModeResponse,
 } from "@agentclientprotocol/sdk"
 import { InstallationVersion } from "@clawc/core/installation/version"
-import type { Message, OpencodeClient, SessionMessageResponse } from "@clawc/sdk/v2"
+import type { Message, ClawcClient, SessionMessageResponse } from "@clawc/sdk/v2"
 import { Context, Effect, Layer, ManagedRuntime } from "effect"
 import * as ACPError from "./error"
 import { buildConfigOptions, parseModelSelection } from "./config-option"
@@ -72,7 +72,7 @@ export type Interface = {
 export class Service extends Context.Service<Service, Interface>()("@clawc/ACP/Service") {}
 
 export function make(input: {
-  sdk: OpencodeClient
+  sdk: ClawcClient
   connection?: ServiceConnection
   directory?: Directory.Interface
   session?: ACPSession.Interface
@@ -101,7 +101,7 @@ export function make(input: {
         "terminal-auth": {
           command: "clawc",
           args: ["auth", "login"],
-          label: "OpenCode Login",
+          label: "ClawC Login",
         },
       }
     }
@@ -127,7 +127,7 @@ export function make(input: {
       },
       authMethods: [authMethod],
       agentInfo: {
-        name: "OpenCode",
+        name: "ClawC",
         version: InstallationVersion,
       },
     }
@@ -575,7 +575,7 @@ function makeSessionService() {
   )
 }
 
-function makeDirectoryService(sdk: OpencodeClient) {
+function makeDirectoryService(sdk: ClawcClient) {
   return ManagedRuntime.make(
     Directory.layer.pipe(
       Layer.provide(
@@ -590,7 +590,7 @@ function makeDirectoryService(sdk: OpencodeClient) {
   ).runSync(Directory.Service.use((service) => Effect.succeed(service)))
 }
 
-function makeUsageService(sdk: OpencodeClient) {
+function makeUsageService(sdk: ClawcClient) {
   const limits = new Map<string, Promise<number | undefined>>()
   const contextLimit: UsageService.Interface["contextLimit"] = Effect.fn("ACP.promptUsage.contextLimit")(
     function* (params) {
@@ -715,7 +715,7 @@ function profiledRequest<T>(name: string, fn: () => Promise<T | SdkResponse<T>>,
   return request(() => ACPProfile.measure(name, fn), service)
 }
 
-async function loadDirectorySnapshot(sdk: OpencodeClient, directory: string) {
+async function loadDirectorySnapshot(sdk: ClawcClient, directory: string) {
   return ACPProfile.measure("acp.directory.load", async () => {
     const [providersResponse, agentsResponse, commandsResponse, skillsResponse, configResponse] = await Promise.all([
       ACPProfile.measure("acp.directory.provider.list", () =>
@@ -822,7 +822,7 @@ function promptResponse(info: AssistantInfo, messageId: string | null | undefine
 
 function sendUsageUpdate(
   usage: UsageService.Interface | undefined,
-  sdk: OpencodeClient,
+  sdk: ClawcClient,
   connection: ServiceConnection | undefined,
   sessionID: string,
   directory: string,
@@ -899,7 +899,7 @@ function sendAvailableCommands(
 }
 
 function registerMcpServers(
-  sdk: OpencodeClient,
+  sdk: ClawcClient,
   registered: Map<string, Set<string>>,
   directory: string,
   sessionId: string,
@@ -1010,7 +1010,7 @@ function fromUnknownError(error: unknown, service?: string): Error {
   if (isAuthRequired(error)) {
     return new ACPError.AuthRequiredError({ providerId: findProviderID(error) })
   }
-  return new ACPError.ServiceFailureError({ safeMessage: "OpenCode service failure", service })
+  return new ACPError.ServiceFailureError({ safeMessage: "ClawC service failure", service })
 }
 
 function isACPError(error: unknown): error is Error {

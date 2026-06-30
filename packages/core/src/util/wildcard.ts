@@ -5,8 +5,10 @@ export function match(input: string, pattern: string) {
   let escaped = pattern
     .replaceAll("\\", "/")
     .replace(/[.+^${}()|[\]\\]/g, "\\$&")
+    .replace(/\*\*/g, "**STAR**")
     .replace(/\*/g, ".*")
     .replace(/\?/g, ".")
+    .replace(/\*\*STAR\*\*/g, ".*")
 
   if (escaped.endsWith(" .*")) escaped = escaped.slice(0, -3) + "( .*)?"
 

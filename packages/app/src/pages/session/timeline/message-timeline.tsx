@@ -40,13 +40,7 @@ import { StickyAccordionHeader } from "@clawc/ui/sticky-accordion-header"
 import { TextField } from "@clawc/ui/text-field"
 import { TextReveal } from "@clawc/ui/text-reveal"
 import { TextShimmer } from "@clawc/ui/text-shimmer"
-import type {
-  AssistantMessage,
-  Message as MessageType,
-  Part as PartType,
-  ToolPart,
-  UserMessage,
-} from "@clawc/sdk/v2"
+import type { AssistantMessage, Message as MessageType, Part as PartType, ToolPart, UserMessage } from "@clawc/sdk/v2"
 import { showToast } from "@/utils/toast"
 import { getDirectory, getFilename } from "@clawc/core/util/path"
 import { Popover as KobaltePopover } from "@kobalte/core/popover"

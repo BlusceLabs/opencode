@@ -21,8 +21,8 @@ body:
   - type: input
     id: clawc-version
     attributes:
-      label: OpenCode version
-      description: What version of OpenCode are you using?
+      label: ClawC version
+      description: What version of ClawC are you using?
     validations:
       required: false
 

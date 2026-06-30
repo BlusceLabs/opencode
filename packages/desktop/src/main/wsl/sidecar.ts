@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto"
 import { createServer } from "node:net"
 import { app } from "electron"
 import { checkHealth } from "../server"
-import { type WslCommandLine, resolveWslOpencode, shellEscape, wslArgs } from "./runtime"
+import { type WslCommandLine, resolveWslClawc, shellEscape, wslArgs } from "./runtime"
 import { pollWslHealth } from "./startup"
 
 export type WslSidecar = {
@@ -17,8 +17,8 @@ export async function spawnWslSidecar(
   distro: string,
   opts: { onLine?: (line: WslCommandLine) => void; healthTimeoutMs?: number } = {},
 ): Promise<WslSidecar> {
-  const clawc = await resolveWslOpencode(distro)
-  if (!clawc) throw new Error(`OpenCode is not installed in ${distro}`)
+  const clawc = await resolveWslClawc(distro)
+  if (!clawc) throw new Error(`ClawC is not installed in ${distro}`)
 
   const port = await allocatePort()
   const password = randomUUID()

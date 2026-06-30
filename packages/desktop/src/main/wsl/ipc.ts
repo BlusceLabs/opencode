@@ -50,10 +50,10 @@ export function registerWslIpcHandlers(controller: WslServersController) {
     controller.probeDistro(requireWslIpcString("distro", name)),
   )
   ipcMain.handle("wsl-servers-probe-clawc", (_event: IpcMainInvokeEvent, name: string) =>
-    controller.probeOpencode(requireWslIpcString("distro", name)),
+    controller.probeClawc(requireWslIpcString("distro", name)),
   )
   ipcMain.handle("wsl-servers-install-clawc", (_event: IpcMainInvokeEvent, name: string) =>
-    controller.installOpencode(requireWslIpcString("distro", name)),
+    controller.installClawc(requireWslIpcString("distro", name)),
   )
   ipcMain.handle("wsl-servers-open-terminal", (_event: IpcMainInvokeEvent, name: string) =>
     controller.openTerminal(requireWslIpcString("distro", name)),

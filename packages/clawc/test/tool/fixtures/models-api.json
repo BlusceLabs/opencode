@@ -28002,10 +28002,10 @@
   },
   "clawc-go": {
     "id": "clawc-go",
-    "env": ["OPENCODE_API_KEY"],
+    "env": ["CLAWC_API_KEY"],
     "npm": "@ai-sdk/openai-compatible",
     "api": "https://clawc.ai/zen/go/v1",
-    "name": "OpenCode Go",
+    "name": "ClawC Go",
     "doc": "https://clawc.ai/docs/zen",
     "models": {
       "minimax-m2.7": {
@@ -57812,10 +57812,10 @@
   },
   "clawc": {
     "id": "clawc",
-    "env": ["OPENCODE_API_KEY"],
+    "env": ["CLAWC_API_KEY"],
     "npm": "@ai-sdk/openai-compatible",
     "api": "https://clawc.ai/zen/v1",
-    "name": "OpenCode Zen",
+    "name": "ClawC Zen",
     "doc": "https://clawc.ai/docs/zen",
     "models": {
       "minimax-m2.7": {

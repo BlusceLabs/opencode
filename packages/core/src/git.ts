@@ -236,7 +236,7 @@ export const layer = Layer.effect(
     ) {
       const result = yield* run(repository.worktree, proc)(["symbolic-ref", `refs/remotes/${remoteName}/HEAD`])
       if (result.exitCode !== 0) return undefined
-      return result.text.trim().replace(new RegExp(`^refs/remotes/${remoteName}/`), "") || undefined
+      return result.text.trim().replace(`refs/remotes/${remoteName}/`, "") || undefined
     })
 
     const operation = Effect.fnUntraced(function* (

@@ -1,4 +1,4 @@
-export * as OpenCode from "./clawc"
+export * as ClawC from "./clawc"
 export * as Tool from "./tool"
 
 export { ClientError } from "@clawc/client/effect"

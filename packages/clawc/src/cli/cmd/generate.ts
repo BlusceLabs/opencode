@@ -18,9 +18,9 @@ export const GenerateCommand = {
           {
             lang: "js",
             source: [
-              `import { createOpencodeClient } from "@clawc/sdk`,
+              `import { createClawcClient } from "@clawc/sdk`,
               ``,
-              `const client = createOpencodeClient()`,
+              `const client = createClawcClient()`,
               `await client.${operation.operationId}({`,
               `  ...`,
               `})`,
